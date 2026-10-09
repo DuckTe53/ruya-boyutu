@@ -1,13 +1,6 @@
 {
   "type": "minecraft:crafting_shapeless",
   "category": "building",
-  "ingredients": [
-    {
-      "item": "ruya_boyutu:nightmare_log"
-    }
-  ],
-  "result": {
-    "id": "ruya_boyutu:nightmare_planks",
-    "count": 4
-  }
+  "ingredients": ["ruya_boyutu:nightmare_log"],
+  "result": {"id": "ruya_boyutu:nightmare_planks", "count": 4}
 }

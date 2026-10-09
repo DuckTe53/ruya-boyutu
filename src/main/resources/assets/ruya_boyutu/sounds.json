@@ -1,0 +1,10 @@
+{
+  "nightmare_scream": {
+    "sounds": [
+      {
+        "name": "ruya_boyutu:nightmare_scream",
+        "stream": true
+      }
+    ]
+  }
+}

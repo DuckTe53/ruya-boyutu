@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "id": "ruya_boyutu",
+  "version": "${version}",
+  "name": "Rüya Boyutu",
+  "description": "Unicorn Valleys, Pinky Canyons ve The HELL için mod prototipi.",
+  "authors": ["Mod geliştiricisi"],
+  "license": "MIT",
+  "environment": "*",
+  "entrypoints": {
+    "main": ["dev.ruyadunyasi.ruya.RuyaBoyutuMod"]
+  },
+  "depends": {
+    "fabricloader": ">=0.18.1",
+    "minecraft": "1.21.11",
+    "java": ">=21",
+    "fabric-api": "*"
+  }
+}

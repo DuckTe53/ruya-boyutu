@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column_horizontal",
+  "textures": {
+    "end": "ruya_boyutu:block/nightmare_log_top",
+    "side": "ruya_boyutu:block/nightmare_log"
+  }
+}

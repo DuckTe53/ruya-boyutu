@@ -1,13 +1,8 @@
 {
-  "variants": {
-    "type=bottom": {
-      "model": "ruya_boyutu:block/nightmare_slab"
-    },
-    "type=top": {
-      "model": "ruya_boyutu:block/nightmare_slab_top"
-    },
-    "type=double": {
-      "model": "ruya_boyutu:block/nightmare_planks"
-    }
+  "parent": "minecraft:block/slab",
+  "textures": {
+    "bottom": "ruya_boyutu:block/nightmare_planks",
+    "top": "ruya_boyutu:block/nightmare_planks",
+    "side": "ruya_boyutu:block/nightmare_planks"
   }
 }

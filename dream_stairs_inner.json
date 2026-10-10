@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/inner_stairs",
+  "textures": {
+    "bottom": "ruya_boyutu:block/dream_planks",
+    "top": "ruya_boyutu:block/dream_planks",
+    "side": "ruya_boyutu:block/dream_planks"
+  }
+}

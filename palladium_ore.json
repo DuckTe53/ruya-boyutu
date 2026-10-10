@@ -1,7 +1,6 @@
 {
-  "variants": {
-    "": {
-      "model": "ruya_boyutu:block/palladium_ore"
-    }
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "ruya_boyutu:block/palladium_ore"
   }
 }

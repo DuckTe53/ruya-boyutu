@@ -1,6 +1,3 @@
 {
-  "model": {
-    "type": "minecraft:model",
-    "model": "ruya_boyutu:block/dream_dirt"
-  }
+  "parent": "ruya_boyutu:block/dream_dirt"
 }

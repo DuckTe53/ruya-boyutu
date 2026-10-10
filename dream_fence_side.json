@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/fence_side",
+  "textures": {
+    "texture": "ruya_boyutu:block/dream_planks"
+  }
+}

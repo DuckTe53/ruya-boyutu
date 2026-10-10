@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/fence_inventory",
+  "textures": {
+    "texture": "ruya_boyutu:block/nightmare_planks"
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/fence_post",
+  "textures": {
+    "texture": "ruya_boyutu:block/nightmare_planks"
+  }
+}

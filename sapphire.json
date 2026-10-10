@@ -1,14 +1,1 @@
-{
-  "layers": {
-    "humanoid": [
-      {
-        "texture": "ruya_boyutu:sapphire"
-      }
-    ],
-    "humanoid_leggings": [
-      {
-        "texture": "ruya_boyutu:sapphire"
-      }
-    ]
-  }
-}
+{"parent":"minecraft:item/generated","textures":{"layer0":"ruya_boyutu:item/sapphire"}}

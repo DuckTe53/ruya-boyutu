@@ -1,7 +1,6 @@
 {
-  "variants": {
-    "": {
-      "model": "ruya_boyutu:block/dream_leaves"
-    }
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "ruya_boyutu:block/dream_leaves"
   }
 }

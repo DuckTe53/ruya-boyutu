@@ -25,7 +25,10 @@
     ],
     [],
     [],
-    [],
+    [
+      "ruya_boyutu:dream_flowers",
+      "ruya_boyutu:dream_tree"
+    ],
     []
   ],
   "spawners": {

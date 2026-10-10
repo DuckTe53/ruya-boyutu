@@ -1,8 +1,0 @@
-{
-  "type": "minecraft:smelting",
-  "category": "misc",
-  "ingredient": "ruya_boyutu:palladium_scrap",
-  "result": {"id": "ruya_boyutu:palladium_ingot"},
-  "experience": 1.0,
-  "cookingtime": 200
-}

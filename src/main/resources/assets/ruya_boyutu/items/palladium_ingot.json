@@ -1,1 +1,6 @@
-{"model":{"type":"minecraft:model","model":"ruya_boyutu:item/palladium_ingot"}}
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "ruya_boyutu:item/palladium_ingot"
+  }
+}

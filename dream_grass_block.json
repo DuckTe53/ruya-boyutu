@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/cube_bottom_top",
-  "textures": {
-    "top": "ruya_boyutu:block/dream_grass_block_top",
-    "side": "ruya_boyutu:block/dream_grass_block_side",
-    "bottom": "ruya_boyutu:block/dream_dirt"
-  }
-}

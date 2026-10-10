@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "axis=y": {
+      "model": "ruya_boyutu:block/dream_log"
+    },
+    "axis=x": {
+      "model": "ruya_boyutu:block/dream_log_horizontal",
+      "x": 90,
+      "y": 90
+    },
+    "axis=z": {
+      "model": "ruya_boyutu:block/dream_log_horizontal",
+      "x": 90
+    }
+  }
+}

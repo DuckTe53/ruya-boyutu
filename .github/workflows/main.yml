@@ -6,14 +6,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Eski dosyaları temizle
-        run: |
-          rm -f src/main/resources/assets/ruya_boyutu/items/arc_reactor.json
-          rm -f src/main/resources/assets/ruya_boyutu/models/item/arc_reactor.json
-          rm -f src/main/resources/assets/ruya_boyutu/textures/item/arc_reactor.png
-          rm -f src/main/resources/data/ruya_boyutu/recipe/arc_reactor.json
-          rm -f src/main/resources/data/ruya_boyutu/recipe/sapphire_from_smelting.json
-          rm -f src/main/resources/data/ruya_boyutu/recipe/palladium_ingot_from_smelting.json
       - uses: actions/setup-java@v4
         with:
           distribution: temurin

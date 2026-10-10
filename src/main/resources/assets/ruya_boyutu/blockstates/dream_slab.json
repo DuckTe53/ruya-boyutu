@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "ruya_boyutu:block/dream_slab"
+    },
+    "type=top": {
+      "model": "ruya_boyutu:block/dream_slab_top"
+    },
+    "type=double": {
+      "model": "ruya_boyutu:block/dream_planks"
+    }
+  }
+}

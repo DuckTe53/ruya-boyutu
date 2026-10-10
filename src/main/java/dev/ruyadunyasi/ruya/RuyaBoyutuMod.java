@@ -426,7 +426,7 @@ public class RuyaBoyutuMod implements ModInitializer {
         if (now < NEXT_POISON_DAMAGE.getOrDefault(id, now)) return;
         NEXT_POISON_DAMAGE.put(id, now + POISON_INTERVAL_TICKS);
         MinecraftServer server = player.level().getServer();
-        if (server != null && player.getHealth() > 2.0F) {
+         if (server != null) {
             server.getCommands().performPrefixedCommand(
                     server.createCommandSourceStack().withSuppressedOutput(),
                     "damage " + player.getUUID() + " 2 minecraft:magic");

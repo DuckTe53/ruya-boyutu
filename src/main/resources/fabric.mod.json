@@ -17,10 +17,12 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "dev.ruyadunyasi.ruya.RuyaBoyutuMod"
+      "dev.ruyadunyasi.ruya.RuyaBoyutuMod",
+      "dev.ruyadunyasi.ruya.KaranfilMod"
     ],
     "client": [
-      "dev.ruyadunyasi.ruya.RuyaBoyutuClient"
+      "dev.ruyadunyasi.ruya.RuyaBoyutuClient",
+      "dev.ruyadunyasi.ruya.KaranfilClient"
     ]
   },
   "depends": {

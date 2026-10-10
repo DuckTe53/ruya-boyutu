@@ -38,5 +38,9 @@
   "item.ruya_boyutu.palladium_chestplate": "Paladyum Göğüslüğü",
   "item.ruya_boyutu.palladium_leggings": "Paladyum Pantolonu",
   "item.ruya_boyutu.palladium_boots": "Paladyum Botu",
-  "entity.ruya_boyutu.nightmare_zombie": "Nightmare Zombisi"
+  "entity.ruya_boyutu.nightmare_zombie": "Nightmare Zombisi",
+  "block.ruya_boyutu.karanfil": "Karanfil",
+  "item.ruya_boyutu.karanfil": "Karanfil",
+  "item.ruya_boyutu.chloroful_bucket": "Kloroful Kovası",
+  "block.ruya_boyutu.chloroful_cauldron": "Kloroful Kazanı"
 }

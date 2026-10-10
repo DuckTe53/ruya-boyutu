@@ -38,5 +38,9 @@
   "item.ruya_boyutu.palladium_chestplate": "Palladium Chestplate",
   "item.ruya_boyutu.palladium_leggings": "Palladium Leggings",
   "item.ruya_boyutu.palladium_boots": "Palladium Boots",
-  "entity.ruya_boyutu.nightmare_zombie": "Nightmare Zombie"
+  "entity.ruya_boyutu.nightmare_zombie": "Nightmare Zombie",
+  "block.ruya_boyutu.karanfil": "Carnation",
+  "item.ruya_boyutu.karanfil": "Carnation",
+  "item.ruya_boyutu.chloroful_bucket": "Chloroful Bucket",
+  "block.ruya_boyutu.chloroful_cauldron": "Chloroful Cauldron"
 }

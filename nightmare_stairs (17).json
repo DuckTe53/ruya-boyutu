@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "P  ",
+    "PP ",
+    "PPP"
+  ],
+  "key": {
+    "P": "ruya_boyutu:nightmare_planks"
+  },
+  "result": {
+    "id": "ruya_boyutu:nightmare_stairs",
+    "count": 4
+  }
+}

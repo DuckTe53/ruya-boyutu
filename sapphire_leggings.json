@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "SSS",
+    "S S",
+    "S S"
+  ],
+  "key": {
+    "S": "ruya_boyutu:sapphire"
+  },
+  "result": {
+    "id": "ruya_boyutu:sapphire_leggings",
+    "count": 1
+  }
+}

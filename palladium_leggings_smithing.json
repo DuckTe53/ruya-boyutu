@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:smithing_transform",
+  "template": "ruya_boyutu:palladium_upgrade_template",
+  "base": "ruya_boyutu:sapphire_leggings",
+  "addition": "ruya_boyutu:palladium_ingot",
+  "result": {
+    "id": "ruya_boyutu:palladium_leggings",
+    "count": 1
+  }
+}

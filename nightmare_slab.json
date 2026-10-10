@@ -1,0 +1,33 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "ruya_boyutu:nightmare_slab",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "add": false,
+              "count": 2.0,
+              "conditions": [
+                {
+                  "condition": "minecraft:block_state_property",
+                  "block": "ruya_boyutu:nightmare_slab",
+                  "properties": {
+                    "type": "double"
+                  }
+                }
+              ]
+            },
+            {
+              "function": "minecraft:explosion_decay"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

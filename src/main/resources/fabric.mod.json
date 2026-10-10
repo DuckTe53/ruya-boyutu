@@ -3,12 +3,25 @@
   "id": "ruya_boyutu",
   "version": "${version}",
   "name": "Rüya Boyutu",
-  "description": "Unicorn Valleys, Pinky Canyons ve The HELL için mod prototipi.",
-  "authors": ["Mod geliştiricisi"],
+  "description": "Gece 03:00'te uyuyarak girilen Rüya Boyutu: Unicorn Valleys, Pinky Canyons ve Nightmare biyomları, Safir ve Paladyum, zırhlar, Nightmare Tapınağı ve Nightmare Zombileri.",
+  "authors": [
+    "DuckTe53"
+  ],
+  "contact": {
+    "homepage": "https://github.com/DuckTe53/ruya-boyutu",
+    "sources": "https://github.com/DuckTe53/ruya-boyutu",
+    "issues": "https://github.com/DuckTe53/ruya-boyutu/issues"
+  },
   "license": "MIT",
+  "icon": "assets/ruya_boyutu/icon.png",
   "environment": "*",
   "entrypoints": {
-    "main": ["dev.ruyadunyasi.ruya.RuyaBoyutuMod"]
+    "main": [
+      "dev.ruyadunyasi.ruya.RuyaBoyutuMod"
+    ],
+    "client": [
+      "dev.ruyadunyasi.ruya.RuyaBoyutuClient"
+    ]
   },
   "depends": {
     "fabricloader": ">=0.18.1",

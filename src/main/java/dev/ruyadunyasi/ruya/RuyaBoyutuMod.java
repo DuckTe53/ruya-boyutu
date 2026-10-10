@@ -6,6 +6,7 @@ import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.player.UseItemCallback;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
+import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.minecraft.commands.Commands;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -24,7 +25,10 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.AxeItem;
@@ -179,6 +183,15 @@ public class RuyaBoyutuMod implements ModInitializer {
     public static final SoundEvent NIGHTMARE_SCREAM = registerSound("nightmare_scream");
     public static final SoundEvent SNORE = registerSound("snore");
 
+    // ---------- Varlıklar ----------
+    public static final EntityType<NightmareZombie> NIGHTMARE_ZOMBIE = registerEntity("nightmare_zombie",
+            EntityType.Builder.of(NightmareZombie::new, MobCategory.MONSTER).sized(0.6F, 1.95F).clientTrackingRange(8));
+
+    private static <T extends Entity> EntityType<T> registerEntity(String name, EntityType.Builder<T> builder) {
+        ResourceKey<EntityType<?>> key = ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(MOD_ID, name));
+        return Registry.register(BuiltInRegistries.ENTITY_TYPE, key, builder.build(key));
+    }
+
     private static Block registerBlock(String name, Function<BlockBehaviour.Properties, Block> factory,
                                        BlockBehaviour.Properties props) {
         Identifier id = Identifier.fromNamespaceAndPath(MOD_ID, name);
@@ -204,6 +217,16 @@ public class RuyaBoyutuMod implements ModInitializer {
 
     @Override
     public void onInitialize() {
+        FabricDefaultAttributeRegistry.register(NIGHTMARE_ZOMBIE, NightmareZombie.createNightmareAttributes());
+
+        // Nightmare Zombisi'nin özel saldırısı: vurduğu hedefe Solma + Karanlık
+        ServerLivingEntityEvents.AFTER_DAMAGE.register((entity, source, baseDamageTaken, damageTaken, blocked) -> {
+            if (!blocked && source.getEntity() instanceof NightmareZombie) {
+                entity.addEffect(new MobEffectInstance(MobEffects.WITHER, 20 * 6, 0));
+                entity.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 20 * 8, 0));
+            }
+        });
+
         // Yaratıcı envanter sekmeleri
         ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.INGREDIENTS).register(entries -> {
             entries.accept(RAW_SAPPHIRE);

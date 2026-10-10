@@ -39,8 +39,9 @@
   "item.ruya_boyutu.palladium_leggings": "Palladium Leggings",
   "item.ruya_boyutu.palladium_boots": "Palladium Boots",
   "entity.ruya_boyutu.nightmare_zombie": "Nightmare Zombie",
-  "block.ruya_boyutu.karanfil": "Carnation",
-  "item.ruya_boyutu.karanfil": "Carnation",
-  "item.ruya_boyutu.chloroful_bucket": "Chloroful Bucket",
-  "block.ruya_boyutu.chloroful_cauldron": "Chloroful Cauldron"
+  "entity.ruya_boyutu.herobrine_silhouette": "Herobrine Silhouette",
+  "entity.ruya_boyutu.steve_silhouette": "Steve Silhouette",
+  "subtitles.ruya_boyutu.strange_drone": "Strange drone",
+  "subtitles.ruya_boyutu.strange_whisper": "Whispering",
+  "subtitles.ruya_boyutu.strange_knock": "Distant knocking"
 }

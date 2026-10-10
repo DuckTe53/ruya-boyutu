@@ -15,5 +15,29 @@
         "name": "ruya_boyutu:snore"
       }
     ]
+  },
+  "strange_drone": {
+    "subtitle": "subtitles.ruya_boyutu.strange_drone",
+    "sounds": [
+      {
+        "name": "ruya_boyutu:strange_drone"
+      }
+    ]
+  },
+  "strange_whisper": {
+    "subtitle": "subtitles.ruya_boyutu.strange_whisper",
+    "sounds": [
+      {
+        "name": "ruya_boyutu:strange_whisper"
+      }
+    ]
+  },
+  "strange_knock": {
+    "subtitle": "subtitles.ruya_boyutu.strange_knock",
+    "sounds": [
+      {
+        "name": "ruya_boyutu:strange_knock"
+      }
+    ]
   }
 }

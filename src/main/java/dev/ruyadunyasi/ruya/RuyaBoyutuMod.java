@@ -8,6 +8,7 @@ import net.fabricmc.fabric.api.event.player.UseItemCallback;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.minecraft.commands.Commands;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -15,11 +16,13 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.util.Mth;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.InteractionResult;
@@ -46,6 +49,7 @@ import net.minecraft.world.item.equipment.EquipmentAsset;
 import net.minecraft.world.item.equipment.EquipmentAssets;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FenceBlock;
@@ -73,6 +77,16 @@ public class RuyaBoyutuMod implements ModInitializer {
     private static final Map<UUID, Long> CHLOROPHYLL_UNTIL = new ConcurrentHashMap<>();
     private static final Map<UUID, Long> SHIELD_UNTIL = new ConcurrentHashMap<>();
     private static final Map<UUID, Long> NIGHTMARE_SOUND_TICKS = new ConcurrentHashMap<>();
+    private static final Map<UUID, Long> PALLADIUM_POISON_UNTIL = new ConcurrentHashMap<>();
+    private static final Map<UUID, Long> NEXT_POISON_DAMAGE = new ConcurrentHashMap<>();
+    private static final Map<UUID, Integer> NIGHTMARE_EXPOSURE = new ConcurrentHashMap<>();
+    private static final Map<UUID, Long> NEXT_HAUNT = new ConcurrentHashMap<>();
+
+    /** Nightmare biyomunda 5 dakika kalınca ürpertici olaylar başlar. */
+    private static final int HAUNT_AFTER_TICKS = 20 * 60 * 5;
+    /** Paladyum zehirlenmesi: 5 saniyede 1 kalp (2 HP), toplam 30 saniye. */
+    private static final long POISON_DURATION_TICKS = 20L * 30L;
+    private static final long POISON_INTERVAL_TICKS = 20L * 5L;
 
     public static final ResourceKey<Biome> NIGHTMARE_BIOME =
             ResourceKey.create(Registries.BIOME, Identifier.fromNamespaceAndPath(MOD_ID, "nightmare"));
@@ -182,10 +196,18 @@ public class RuyaBoyutuMod implements ModInitializer {
     // ---------- Sesler ----------
     public static final SoundEvent NIGHTMARE_SCREAM = registerSound("nightmare_scream");
     public static final SoundEvent SNORE = registerSound("snore");
+    public static final SoundEvent STRANGE_DRONE = registerSound("strange_drone");
+    public static final SoundEvent STRANGE_WHISPER = registerSound("strange_whisper");
+    public static final SoundEvent STRANGE_KNOCK = registerSound("strange_knock");
 
     // ---------- Varlıklar ----------
     public static final EntityType<NightmareZombie> NIGHTMARE_ZOMBIE = registerEntity("nightmare_zombie",
             EntityType.Builder.of(NightmareZombie::new, MobCategory.MONSTER).sized(0.6F, 1.95F).clientTrackingRange(8));
+
+    public static final EntityType<SilhouetteEntity> HEROBRINE_SILHOUETTE = registerEntity("herobrine_silhouette",
+            EntityType.Builder.of(SilhouetteEntity::new, MobCategory.MISC).sized(0.6F, 1.95F).clientTrackingRange(10));
+    public static final EntityType<SilhouetteEntity> STEVE_SILHOUETTE = registerEntity("steve_silhouette",
+            EntityType.Builder.of(SilhouetteEntity::new, MobCategory.MISC).sized(0.6F, 1.95F).clientTrackingRange(10));
 
     private static <T extends Entity> EntityType<T> registerEntity(String name, EntityType.Builder<T> builder) {
         ResourceKey<EntityType<?>> key = ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(MOD_ID, name));
@@ -218,6 +240,9 @@ public class RuyaBoyutuMod implements ModInitializer {
     @Override
     public void onInitialize() {
         FabricDefaultAttributeRegistry.register(NIGHTMARE_ZOMBIE, NightmareZombie.createNightmareAttributes());
+        FabricDefaultAttributeRegistry.register(HEROBRINE_SILHOUETTE, SilhouetteEntity.createSilhouetteAttributes());
+        FabricDefaultAttributeRegistry.register(STEVE_SILHOUETTE, SilhouetteEntity.createSilhouetteAttributes());
+        SapphireEnchantRecipe.init();
 
         // Nightmare Zombisi'nin özel saldırısı: vurduğu hedefe Solma + Karanlık
         ServerLivingEntityEvents.AFTER_DAMAGE.register((entity, source, baseDamageTaken, damageTaken, blocked) -> {
@@ -301,6 +326,8 @@ public class RuyaBoyutuMod implements ModInitializer {
                 tickSleep(server, player);
                 tickPlayer(player);
                 tickNightmareAmbience(player);
+                tickHaunting(player);
+                tickPalladiumPoison(player);
             }
         });
 
@@ -309,6 +336,10 @@ public class RuyaBoyutuMod implements ModInitializer {
             if (stack.is(CHLOROFUL) && !world.isClientSide() && player instanceof ServerPlayer serverPlayer) {
                 CHLOROPHYLL_UNTIL.put(player.getUUID(), world.getGameTime() + 15L * 60L * 20L);
                 serverPlayer.removeEffect(MobEffects.POISON);
+                if (PALLADIUM_POISON_UNTIL.remove(player.getUUID()) != null) {
+                    serverPlayer.sendSystemMessage(Component.literal("Kloroful zehirlenmeyi 15 dakikalığına bastırdı."));
+                }
+                NEXT_POISON_DAMAGE.remove(player.getUUID());
             }
             return InteractionResult.PASS;
         });
@@ -371,6 +402,92 @@ public class RuyaBoyutuMod implements ModInitializer {
         player.sendSystemMessage(Component.literal("Uyandın."));
     }
 
+    // ================= PALADYUM ZEHİRLENMESİ =================
+
+    private static void startPalladiumPoison(ServerPlayer player, long now) {
+        UUID id = player.getUUID();
+        if (PALLADIUM_POISON_UNTIL.containsKey(id)) return;
+        PALLADIUM_POISON_UNTIL.put(id, now + POISON_DURATION_TICKS);
+        NEXT_POISON_DAMAGE.put(id, now + POISON_INTERVAL_TICKS);
+        player.sendSystemMessage(Component.literal("Paladyum zehirlenmesi başladı! Kloroful içerek bastırabilirsin."));
+    }
+
+    /** 5 saniyede 1 kalp. Zehir tek başına öldürmez (1 kalbin altına inmez). */
+    private static void tickPalladiumPoison(ServerPlayer player) {
+        UUID id = player.getUUID();
+        Long until = PALLADIUM_POISON_UNTIL.get(id);
+        if (until == null) return;
+        long now = player.level().getGameTime();
+        if (now >= until) {
+            PALLADIUM_POISON_UNTIL.remove(id);
+            NEXT_POISON_DAMAGE.remove(id);
+            return;
+        }
+        if (now < NEXT_POISON_DAMAGE.getOrDefault(id, now)) return;
+        NEXT_POISON_DAMAGE.put(id, now + POISON_INTERVAL_TICKS);
+        MinecraftServer server = player.level().getServer();
+        if (server != null && player.getHealth() > 2.0F) {
+            server.getCommands().performPrefixedCommand(
+                    server.createCommandSourceStack().withSuppressedOutput(),
+                    "damage " + player.getUUID() + " 2 minecraft:magic");
+        }
+    }
+
+    // ================= NIGHTMARE: GARİP SESLER VE SİLÜETLER =================
+
+    private static void tickHaunting(ServerPlayer player) {
+        UUID id = player.getUUID();
+        boolean inNightmare = player.level().getBiome(player.blockPosition()).is(NIGHTMARE_BIOME);
+        int exposure = NIGHTMARE_EXPOSURE.getOrDefault(id, 0);
+        if (inNightmare) {
+            exposure = Math.min(exposure + 1, HAUNT_AFTER_TICKS + 1);
+        } else {
+            exposure = Math.max(exposure - 2, 0);
+        }
+        NIGHTMARE_EXPOSURE.put(id, exposure);
+        if (!inNightmare || exposure < HAUNT_AFTER_TICKS) return;
+
+        long now = player.level().getGameTime();
+        long next = NEXT_HAUNT.getOrDefault(id, now + 20L * 15L);
+        if (now < next) return;
+        NEXT_HAUNT.put(id, now + 20L * (25 + player.getRandom().nextInt(50)));
+
+        if (!(player.level() instanceof ServerLevel level)) return;
+        if (player.getRandom().nextInt(10) < 5) {
+            playStrangeSound(level, player);
+        } else {
+            spawnSilhouette(level, player);
+        }
+    }
+
+    private static void playStrangeSound(ServerLevel level, ServerPlayer player) {
+        SoundEvent[] sounds = {STRANGE_DRONE, STRANGE_WHISPER, STRANGE_KNOCK};
+        SoundEvent sound = sounds[player.getRandom().nextInt(sounds.length)];
+        double angle = player.getRandom().nextDouble() * Math.PI * 2.0D;
+        double dist = 8 + player.getRandom().nextInt(11);
+        BlockPos pos = BlockPos.containing(player.getX() + Math.cos(angle) * dist, player.getY(), player.getZ() + Math.sin(angle) * dist);
+        level.playSound(null, pos, sound, SoundSource.AMBIENT, 1.2F, 0.85F + player.getRandom().nextFloat() * 0.3F);
+    }
+
+    private static void spawnSilhouette(ServerLevel level, ServerPlayer player) {
+        // Yakında zaten bir silüet varsa yenisini oluşturma
+        if (!level.getEntitiesOfClass(SilhouetteEntity.class, player.getBoundingBox().inflate(48.0D)).isEmpty()) return;
+        double angle = player.getRandom().nextDouble() * Math.PI * 2.0D;
+        double dist = 14 + player.getRandom().nextInt(9);
+        int x = Mth.floor(player.getX() + Math.cos(angle) * dist);
+        int z = Mth.floor(player.getZ() + Math.sin(angle) * dist);
+        int y = level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, x, z);
+        EntityType<SilhouetteEntity> type = player.getRandom().nextInt(10) < 7 ? HEROBRINE_SILHOUETTE : STEVE_SILHOUETTE;
+        SilhouetteEntity silhouette = new SilhouetteEntity(type, level);
+        silhouette.setPos(x + 0.5D, y, z + 0.5D);
+        double dx = player.getX() - silhouette.getX();
+        double dz = player.getZ() - silhouette.getZ();
+        float yaw = (float) (Mth.atan2(dz, dx) * (180.0D / Math.PI)) - 90.0F;
+        silhouette.setYRot(yaw);
+        silhouette.setYHeadRot(yaw);
+        level.addFreshEntity(silhouette);
+    }
+
     private static void tickNightmareAmbience(ServerPlayer player) {
         // Kâbus biyomunda arada korkunç çığlık sesi
         if (!player.level().getBiome(player.blockPosition()).is(NIGHTMARE_BIOME)) return;
@@ -407,7 +524,7 @@ public class RuyaBoyutuMod implements ModInitializer {
             long start = ARMOR_TICKS.computeIfAbsent(id, ignored -> now);
             if (now - start >= 11L * 60L * 20L) {
                 if (CHLOROPHYLL_UNTIL.getOrDefault(id, 0L) <= now) {
-                    player.addEffect(new MobEffectInstance(MobEffects.POISON, 20 * 30, 0, false, true, true));
+                    startPalladiumPoison(player, now);
                 }
                 ARMOR_TICKS.put(id, now);
             }
@@ -429,7 +546,7 @@ public class RuyaBoyutuMod implements ModInitializer {
             long start = CORE_TICKS.computeIfAbsent(id, ignored -> now);
             if (now - start >= 15L * 60L * 20L) {
                 if (CHLOROPHYLL_UNTIL.getOrDefault(id, 0L) <= now) {
-                    player.addEffect(new MobEffectInstance(MobEffects.POISON, 20 * 30, 0, false, true, true));
+                    startPalladiumPoison(player, now);
                 }
                 CORE_TICKS.put(id, now);
             }

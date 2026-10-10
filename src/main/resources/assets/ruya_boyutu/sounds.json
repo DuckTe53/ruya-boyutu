@@ -1,9 +1,18 @@
 {
   "nightmare_scream": {
+    "subtitle": "subtitles.ruya_boyutu.nightmare_scream",
     "sounds": [
       {
         "name": "ruya_boyutu:nightmare_scream",
         "stream": true
+      }
+    ]
+  },
+  "snore": {
+    "subtitle": "subtitles.ruya_boyutu.snore",
+    "sounds": [
+      {
+        "name": "ruya_boyutu:snore"
       }
     ]
   }

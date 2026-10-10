@@ -1,0 +1,42 @@
+{
+  "has_precipitation": false,
+  "temperature": 0.8,
+  "downfall": 0.0,
+  "effects": {
+    "fog_color": 16770038,
+    "sky_color": 16763118,
+    "water_color": 4159204,
+    "water_fog_color": 329011
+  },
+  "attributes": {
+    "minecraft:visual/fog_color": "#ffe3f6",
+    "minecraft:visual/sky_color": "#ffc8ee"
+  },
+  "carvers": [],
+  "features": [
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [
+      "ruya_boyutu:ore_sapphire"
+    ],
+    [],
+    [],
+    [],
+    []
+  ],
+  "spawners": {
+    "monster": [],
+    "creature": [],
+    "ambient": [],
+    "axolotls": [],
+    "underground_water_creature": [],
+    "water_creature": [],
+    "water_ambient": [],
+    "misc": []
+  },
+  "spawn_costs": {}
+}

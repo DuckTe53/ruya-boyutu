@@ -8,5 +8,11 @@
   "block.ruya_boyutu.nightmare_log": "Nightmare Log",
   "block.ruya_boyutu.nightmare_planks": "Nightmare Planks",
   "item.ruya_boyutu.nightmare_log": "Nightmare Log",
-  "item.ruya_boyutu.nightmare_planks": "Nightmare Planks"
+  "item.ruya_boyutu.nightmare_planks": "Nightmare Planks",
+  "block.ruya_boyutu.dream_dirt": "Dream Dirt",
+  "block.ruya_boyutu.dream_grass_block": "Dream Grass Block",
+  "block.ruya_boyutu.sapphire_ore": "Sapphire Ore",
+  "block.ruya_boyutu.palladium_ore": "Palladium Ore",
+  "subtitles.ruya_boyutu.snore": "Snoring",
+  "subtitles.ruya_boyutu.nightmare_scream": "Nightmare scream"
 }

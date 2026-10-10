@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "ruya_boyutu:palladium_scrap",
+    "ruya_boyutu:palladium_scrap",
+    "ruya_boyutu:palladium_scrap",
+    "ruya_boyutu:palladium_scrap",
+    "minecraft:diamond",
+    "minecraft:diamond",
+    "minecraft:diamond",
+    "minecraft:diamond"
+  ],
+  "result": {
+    "id": "ruya_boyutu:palladium_ingot",
+    "count": 1
+  }
+}

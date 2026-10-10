@@ -8,5 +8,11 @@
   "block.ruya_boyutu.nightmare_log": "Kâbus Odunu",
   "block.ruya_boyutu.nightmare_planks": "Kâbus Tahtası",
   "item.ruya_boyutu.nightmare_log": "Kâbus Odunu",
-  "item.ruya_boyutu.nightmare_planks": "Kâbus Tahtası"
+  "item.ruya_boyutu.nightmare_planks": "Kâbus Tahtası",
+  "block.ruya_boyutu.dream_dirt": "Rüya Toprağı",
+  "block.ruya_boyutu.dream_grass_block": "Rüya Çimen Bloğu",
+  "block.ruya_boyutu.sapphire_ore": "Safir Cevheri",
+  "block.ruya_boyutu.palladium_ore": "Paladyum Cevheri",
+  "subtitles.ruya_boyutu.snore": "Horlama",
+  "subtitles.ruya_boyutu.nightmare_scream": "Kâbus çığlığı"
 }

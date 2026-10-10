@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "ruya_boyutu:block/sapphire_ore"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "ruya_boyutu:sapphire"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "ruya_boyutu:sapphire"
+      }
+    ]
+  }
+}

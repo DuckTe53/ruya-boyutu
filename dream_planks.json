@@ -1,19 +1,7 @@
 {
-  "type": "minecraft:block",
-  "pools": [
-    {
-      "rolls": 1,
-      "entries": [
-        {
-          "type": "minecraft:item",
-          "name": "ruya_boyutu:dream_planks"
-        }
-      ],
-      "conditions": [
-        {
-          "condition": "minecraft:survives_explosion"
-        }
-      ]
+  "variants": {
+    "": {
+      "model": "ruya_boyutu:block/dream_planks"
     }
-  ]
+  }
 }

@@ -1,0 +1,14 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "ruya_boyutu:palladium"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "ruya_boyutu:palladium"
+      }
+    ]
+  }
+}

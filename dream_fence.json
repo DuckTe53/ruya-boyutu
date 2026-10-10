@@ -1,19 +1,48 @@
 {
-  "type": "minecraft:block",
-  "pools": [
+  "multipart": [
     {
-      "rolls": 1,
-      "entries": [
-        {
-          "type": "minecraft:item",
-          "name": "ruya_boyutu:dream_fence"
-        }
-      ],
-      "conditions": [
-        {
-          "condition": "minecraft:survives_explosion"
-        }
-      ]
+      "apply": {
+        "model": "ruya_boyutu:block/dream_fence_post"
+      }
+    },
+    {
+      "when": {
+        "north": "true"
+      },
+      "apply": {
+        "model": "ruya_boyutu:block/dream_fence_side",
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "east": "true"
+      },
+      "apply": {
+        "model": "ruya_boyutu:block/dream_fence_side",
+        "uvlock": true,
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "south": "true"
+      },
+      "apply": {
+        "model": "ruya_boyutu:block/dream_fence_side",
+        "uvlock": true,
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "west": "true"
+      },
+      "apply": {
+        "model": "ruya_boyutu:block/dream_fence_side",
+        "uvlock": true,
+        "y": 270
+      }
     }
   ]
 }

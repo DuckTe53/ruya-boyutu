@@ -1,18 +1,6 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "category": "misc",
-  "pattern": [
-    "SPS",
-    "PGP",
-    "SPS"
-  ],
-  "key": {
-    "S": "minecraft:netherite_scrap",
-    "P": "ruya_boyutu:palladium_ingot",
-    "G": "ruya_boyutu:sapphire"
-  },
-  "result": {
-    "id": "ruya_boyutu:palladium_core",
-    "count": 1
+  "model": {
+    "type": "minecraft:model",
+    "model": "ruya_boyutu:item/palladium_core"
   }
 }

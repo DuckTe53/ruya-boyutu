@@ -4,6 +4,7 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.event.player.UseItemCallback;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
@@ -39,6 +40,7 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.HoeItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.ShovelItem;
@@ -53,6 +55,7 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FenceBlock;
+import net.minecraft.world.level.block.LayeredCauldronBlock;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.StairBlock;
@@ -149,6 +152,12 @@ public class RuyaBoyutuMod implements ModInitializer {
     public static final Block PALLADIUM_ORE = registerBlock("palladium_ore", Block::new,
             BlockBehaviour.Properties.ofFullCopy(Blocks.DIAMOND_ORE));
 
+    public static final Block CARNATION = registerBlock("carnation", CarnationBlock::new,
+            BlockBehaviour.Properties.ofFullCopy(Blocks.POPPY));
+    /** Kloroful dolu kazan (eşyası yoktur; kırılınca normal kazan düşer). */
+    public static final Block CHLOROFUL_CAULDRON = registerBlockOnly("chloroful_cauldron", ChloroCauldronBlock::new,
+            BlockBehaviour.Properties.ofFullCopy(Blocks.CAULDRON));
+
     // ---------- Eşyalar ----------
     public static final Item RAW_SAPPHIRE = register("raw_sapphire", Item::new, new Item.Properties());
     public static final Item SAPPHIRE = register("sapphire", Item::new, new Item.Properties().rarity(Rarity.UNCOMMON));
@@ -212,6 +221,12 @@ public class RuyaBoyutuMod implements ModInitializer {
     private static <T extends Entity> EntityType<T> registerEntity(String name, EntityType.Builder<T> builder) {
         ResourceKey<EntityType<?>> key = ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(MOD_ID, name));
         return Registry.register(BuiltInRegistries.ENTITY_TYPE, key, builder.build(key));
+    }
+
+    private static Block registerBlockOnly(String name, Function<BlockBehaviour.Properties, Block> factory,
+                                           BlockBehaviour.Properties props) {
+        ResourceKey<Block> key = ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(MOD_ID, name));
+        return Registry.register(BuiltInRegistries.BLOCK, key, factory.apply(props.setId(key)));
     }
 
     private static Block registerBlock(String name, Function<BlockBehaviour.Properties, Block> factory,
@@ -298,6 +313,7 @@ public class RuyaBoyutuMod implements ModInitializer {
             entries.accept(NIGHTMARE_LOG);
             entries.accept(SAPPHIRE_ORE);
             entries.accept(PALLADIUM_ORE);
+            entries.accept(CARNATION);
         });
 
         // Rüya boyutunda düşme hasarı kapalı
@@ -320,6 +336,46 @@ public class RuyaBoyutuMod implements ModInitializer {
                             wakeUp(player);
                             return 1;
                         }))));
+
+        // Kloroful üretimi: su dolu kazana Karanfil -> Kloroful kazanı; kazandan cam şişeyle Kloroful al
+        UseBlockCallback.EVENT.register((player, level, hand, hit) -> {
+            if (player.isSpectator()) return InteractionResult.PASS;
+            BlockPos pos = hit.getBlockPos();
+            var state = level.getBlockState(pos);
+            ItemStack held = player.getItemInHand(hand);
+
+            if (state.is(Blocks.WATER_CAULDRON) && held.is(CARNATION.asItem())) {
+                if (!level.isClientSide()) {
+                    level.setBlockAndUpdate(pos, CHLOROFUL_CAULDRON.defaultBlockState()
+                            .setValue(ChloroCauldronBlock.LEVEL, state.getValue(LayeredCauldronBlock.LEVEL)));
+                    if (!player.getAbilities().instabuild) held.shrink(1);
+                    level.playSound(null, pos, SoundEvents.BOTTLE_FILL, SoundSource.BLOCKS, 1.0F, 1.0F);
+                }
+                return InteractionResult.SUCCESS;
+            }
+
+            if (state.is(CHLOROFUL_CAULDRON) && held.is(Items.GLASS_BOTTLE)) {
+                if (!level.isClientSide()) {
+                    int fill = state.getValue(ChloroCauldronBlock.LEVEL);
+                    ItemStack bottle = new ItemStack(CHLOROFUL);
+                    if (!player.getAbilities().instabuild) {
+                        held.shrink(1);
+                        if (held.isEmpty()) {
+                            player.setItemInHand(hand, bottle);
+                        } else if (!player.getInventory().add(bottle)) {
+                            player.drop(bottle, false);
+                        }
+                    } else if (!player.getInventory().add(bottle)) {
+                        player.drop(bottle, false);
+                    }
+                    level.setBlockAndUpdate(pos, fill <= 1 ? Blocks.CAULDRON.defaultBlockState()
+                            : state.setValue(ChloroCauldronBlock.LEVEL, fill - 1));
+                    level.playSound(null, pos, SoundEvents.BOTTLE_FILL, SoundSource.BLOCKS, 1.0F, 1.0F);
+                }
+                return InteractionResult.SUCCESS;
+            }
+            return InteractionResult.PASS;
+        });
 
         ServerTickEvents.END_SERVER_TICK.register(server -> {
             for (ServerPlayer player : server.getPlayerList().getPlayers()) {
@@ -412,7 +468,7 @@ public class RuyaBoyutuMod implements ModInitializer {
         player.sendSystemMessage(Component.literal("Paladyum zehirlenmesi başladı! Kloroful içerek bastırabilirsin."));
     }
 
-    /** 5 saniyede 1 kalp. Zehir tek başına öldürmez (1 kalbin altına inmez). */
+    /** 5 saniyede 1 kalp. Zehir öldürücüdür. */
     private static void tickPalladiumPoison(ServerPlayer player) {
         UUID id = player.getUUID();
         Long until = PALLADIUM_POISON_UNTIL.get(id);
@@ -426,7 +482,7 @@ public class RuyaBoyutuMod implements ModInitializer {
         if (now < NEXT_POISON_DAMAGE.getOrDefault(id, now)) return;
         NEXT_POISON_DAMAGE.put(id, now + POISON_INTERVAL_TICKS);
         MinecraftServer server = player.level().getServer();
-         if (server != null) {
+        if (server != null) {
             server.getCommands().performPrefixedCommand(
                     server.createCommandSourceStack().withSuppressedOutput(),
                     "damage " + player.getUUID() + " 2 minecraft:magic");

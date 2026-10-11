@@ -33,7 +33,14 @@
   ],
   "spawners": {
     "monster": [],
-    "creature": [],
+    "creature": [
+      {
+        "type": "ruya_boyutu:unicorn",
+        "weight": 12,
+        "minCount": 2,
+        "maxCount": 4
+      }
+    ],
     "ambient": [],
     "axolotls": [],
     "underground_water_creature": [],
@@ -41,5 +48,6 @@
     "water_ambient": [],
     "misc": []
   },
-  "spawn_costs": {}
+  "spawn_costs": {},
+  "creature_spawn_probability": 0.3
 }

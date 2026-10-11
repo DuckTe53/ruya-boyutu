@@ -18,11 +18,13 @@
   "entrypoints": {
     "main": [
       "dev.ruyadunyasi.ruya.RuyaBoyutuMod",
-      "dev.ruyadunyasi.ruya.KaranfilMod"
+      "dev.ruyadunyasi.ruya.KaranfilMod",
+      "dev.ruyadunyasi.ruya.RuyaExtrasMod"
     ],
     "client": [
       "dev.ruyadunyasi.ruya.RuyaBoyutuClient",
-      "dev.ruyadunyasi.ruya.KaranfilClient"
+      "dev.ruyadunyasi.ruya.KaranfilClient",
+      "dev.ruyadunyasi.ruya.RuyaExtrasClient"
     ]
   },
   "depends": {

@@ -44,6 +44,10 @@
   "subtitles.ruya_boyutu.strange_drone": "Strange drone",
   "subtitles.ruya_boyutu.strange_whisper": "Whispering",
   "subtitles.ruya_boyutu.strange_knock": "Distant knocking",
-  "block.ruya_boyutu.carnation": "Carnation",
-  "block.ruya_boyutu.chloroful_cauldron": "Chloroful Cauldron"
+  "entity.ruya_boyutu.unicorn": "Unicorn",
+  "item.ruya_boyutu.unicorn_spawn_egg": "Unicorn Spawn Egg",
+  "item.ruya_boyutu.nightmare_zombie_spawn_egg": "Nightmare Zombie Spawn Egg",
+  "subtitles.ruya_boyutu.unicorn_ambient": "Unicorn whinnies",
+  "subtitles.ruya_boyutu.unicorn_hurt": "Unicorn cries",
+  "subtitles.ruya_boyutu.unicorn_death": "Unicorn dies"
 }

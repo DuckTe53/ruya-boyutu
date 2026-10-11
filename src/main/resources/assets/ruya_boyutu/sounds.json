@@ -39,5 +39,32 @@
         "name": "ruya_boyutu:strange_knock"
       }
     ]
+  },
+  "unicorn_ambient": {
+    "subtitle": "subtitles.ruya_boyutu.unicorn_ambient",
+    "sounds": [
+      {
+        "name": "ruya_boyutu:unicorn_ambient1"
+      },
+      {
+        "name": "ruya_boyutu:unicorn_ambient2"
+      }
+    ]
+  },
+  "unicorn_hurt": {
+    "subtitle": "subtitles.ruya_boyutu.unicorn_hurt",
+    "sounds": [
+      {
+        "name": "ruya_boyutu:unicorn_hurt"
+      }
+    ]
+  },
+  "unicorn_death": {
+    "subtitle": "subtitles.ruya_boyutu.unicorn_death",
+    "sounds": [
+      {
+        "name": "ruya_boyutu:unicorn_death"
+      }
+    ]
   }
 }

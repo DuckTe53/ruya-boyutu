@@ -1,0 +1,36 @@
+{
+  "parent": "ruya_boyutu:uyanmak_istemiyorum",
+  "display": {
+    "icon": {
+      "id": "minecraft:crimson_nylium"
+    },
+    "title": {
+      "translate": "advancements.ruya_boyutu.urkunc_tapinak.title"
+    },
+    "description": {
+      "translate": "advancements.ruya_boyutu.urkunc_tapinak.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "temple": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "location": {
+                "structure": "ruya_boyutu:palladium_temple"
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}

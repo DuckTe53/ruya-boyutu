@@ -63,6 +63,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
@@ -90,6 +91,11 @@ public class RuyaBoyutuMod implements ModInitializer {
     /** Paladyum zehirlenmesi: 5 saniyede 1 kalp (2 HP), toplam 30 saniye. */
     private static final long POISON_DURATION_TICKS = 20L * 30L;
     private static final long POISON_INTERVAL_TICKS = 20L * 5L;
+
+    public static final ResourceKey<Biome> UNICORN_VALLEYS_BIOME =
+            ResourceKey.create(Registries.BIOME, Identifier.fromNamespaceAndPath(MOD_ID, "unicorn_valleys"));
+    /** "Bu gerçek olamaz" başarımını bu oturumda zaten verdiğimiz oyuncular. */
+    private static final Set<UUID> SUNRISE_GRANTED = ConcurrentHashMap.newKeySet();
 
     public static final ResourceKey<Biome> NIGHTMARE_BIOME =
             ResourceKey.create(Registries.BIOME, Identifier.fromNamespaceAndPath(MOD_ID, "nightmare"));
@@ -331,6 +337,7 @@ public class RuyaBoyutuMod implements ModInitializer {
                 tickNightmareAmbience(player);
                 tickHaunting(player);
                 tickPalladiumPoison(player);
+                tickSunriseAdvancement(server, player);
             }
         });
 
@@ -403,6 +410,20 @@ public class RuyaBoyutuMod implements ModInitializer {
         }
         runAs(server, player, "minecraft:overworld", target);
         player.sendSystemMessage(Component.literal("Uyandın."));
+    }
+
+    // ================= BAŞARIMLAR =================
+
+    /** Unicorn Vadileri'nde açık havada güneşin doğuşunu (gün başlangıcı) izleyene "Bu gerçek olamaz" verir. */
+    private static void tickSunriseAdvancement(MinecraftServer server, ServerPlayer player) {
+        if (!isInDream(player.level().dimension())) return;
+        if (player.level().getDayTime() % 24000L > 100L) return; // 0 = gündoğumu
+        if (!player.level().getBiome(player.blockPosition()).is(UNICORN_VALLEYS_BIOME)) return;
+        if (!player.level().canSeeSky(player.blockPosition())) return;
+        if (!SUNRISE_GRANTED.add(player.getUUID())) return;
+        server.getCommands().performPrefixedCommand(
+                server.createCommandSourceStack().withSuppressedOutput(),
+                "advancement grant " + player.getUUID() + " only " + MOD_ID + ":bu_gercek_olamaz");
     }
 
     // ================= PALADYUM ZEHİRLENMESİ =================

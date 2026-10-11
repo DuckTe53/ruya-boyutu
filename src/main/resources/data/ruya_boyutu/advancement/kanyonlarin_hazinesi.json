@@ -1,0 +1,30 @@
+{
+  "parent": "ruya_boyutu:uyanmak_istemiyorum",
+  "display": {
+    "icon": {
+      "id": "ruya_boyutu:palladium_scrap"
+    },
+    "title": {
+      "translate": "advancements.ruya_boyutu.kanyonlarin_hazinesi.title"
+    },
+    "description": {
+      "translate": "advancements.ruya_boyutu.kanyonlarin_hazinesi.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "scrap": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "ruya_boyutu:palladium_scrap"
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "parent": "ruya_boyutu:uyanmak_istemiyorum",
+  "display": {
+    "icon": {
+      "id": "ruya_boyutu:sapphire"
+    },
+    "title": {
+      "translate": "advancements.ruya_boyutu.mavis_parca.title"
+    },
+    "description": {
+      "translate": "advancements.ruya_boyutu.mavis_parca.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "sapphire": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "ruya_boyutu:sapphire"
+          }
+        ]
+      }
+    }
+  }
+}

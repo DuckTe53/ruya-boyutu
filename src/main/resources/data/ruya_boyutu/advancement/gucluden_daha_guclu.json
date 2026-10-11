@@ -1,0 +1,39 @@
+{
+  "parent": "ruya_boyutu:kanyonlarin_hazinesi",
+  "display": {
+    "icon": {
+      "id": "ruya_boyutu:palladium_chestplate"
+    },
+    "title": {
+      "translate": "advancements.ruya_boyutu.gucluden_daha_guclu.title"
+    },
+    "description": {
+      "translate": "advancements.ruya_boyutu.gucluden_daha_guclu.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "armor": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "ruya_boyutu:palladium_helmet"
+          },
+          {
+            "items": "ruya_boyutu:palladium_chestplate"
+          },
+          {
+            "items": "ruya_boyutu:palladium_leggings"
+          },
+          {
+            "items": "ruya_boyutu:palladium_boots"
+          }
+        ]
+      }
+    }
+  }
+}

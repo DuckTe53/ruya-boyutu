@@ -1,0 +1,26 @@
+{
+  "parent": "ruya_boyutu:root",
+  "display": {
+    "icon": {
+      "id": "minecraft:white_bed"
+    },
+    "title": {
+      "translate": "advancements.ruya_boyutu.uyanmak_istemiyorum.title"
+    },
+    "description": {
+      "translate": "advancements.ruya_boyutu.uyanmak_istemiyorum.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "enter_dream": {
+      "trigger": "minecraft:changed_dimension",
+      "conditions": {
+        "to": "ruya_boyutu:dream"
+      }
+    }
+  }
+}

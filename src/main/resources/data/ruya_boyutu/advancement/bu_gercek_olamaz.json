@@ -1,0 +1,26 @@
+{
+  "parent": "ruya_boyutu:uyanmak_istemiyorum",
+  "display": {
+    "icon": {
+      "id": "minecraft:pink_tulip"
+    },
+    "title": {
+      "translate": "advancements.ruya_boyutu.bu_gercek_olamaz.title"
+    },
+    "description": {
+      "translate": "advancements.ruya_boyutu.bu_gercek_olamaz.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "sunrise": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "rewards": {
+    "experience": 100
+  }
+}

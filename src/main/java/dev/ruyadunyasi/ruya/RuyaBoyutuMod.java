@@ -152,12 +152,6 @@ public class RuyaBoyutuMod implements ModInitializer {
     public static final Block PALLADIUM_ORE = registerBlock("palladium_ore", Block::new,
             BlockBehaviour.Properties.ofFullCopy(Blocks.DIAMOND_ORE));
 
-    public static final Block CARNATION = registerBlock("carnation", CarnationBlock::new,
-            BlockBehaviour.Properties.ofFullCopy(Blocks.POPPY));
-    /** Kloroful dolu kazan (eşyası yoktur; kırılınca normal kazan düşer). */
-    public static final Block CHLOROFUL_CAULDRON = registerBlockOnly("chloroful_cauldron", ChloroCauldronBlock::new,
-            BlockBehaviour.Properties.ofFullCopy(Blocks.CAULDRON));
-
     // ---------- Eşyalar ----------
     public static final Item RAW_SAPPHIRE = register("raw_sapphire", Item::new, new Item.Properties());
     public static final Item SAPPHIRE = register("sapphire", Item::new, new Item.Properties().rarity(Rarity.UNCOMMON));
@@ -221,12 +215,6 @@ public class RuyaBoyutuMod implements ModInitializer {
     private static <T extends Entity> EntityType<T> registerEntity(String name, EntityType.Builder<T> builder) {
         ResourceKey<EntityType<?>> key = ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(MOD_ID, name));
         return Registry.register(BuiltInRegistries.ENTITY_TYPE, key, builder.build(key));
-    }
-
-    private static Block registerBlockOnly(String name, Function<BlockBehaviour.Properties, Block> factory,
-                                           BlockBehaviour.Properties props) {
-        ResourceKey<Block> key = ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(MOD_ID, name));
-        return Registry.register(BuiltInRegistries.BLOCK, key, factory.apply(props.setId(key)));
     }
 
     private static Block registerBlock(String name, Function<BlockBehaviour.Properties, Block> factory,
@@ -313,7 +301,6 @@ public class RuyaBoyutuMod implements ModInitializer {
             entries.accept(NIGHTMARE_LOG);
             entries.accept(SAPPHIRE_ORE);
             entries.accept(PALLADIUM_ORE);
-            entries.accept(CARNATION);
         });
 
         // Rüya boyutunda düşme hasarı kapalı
@@ -336,46 +323,6 @@ public class RuyaBoyutuMod implements ModInitializer {
                             wakeUp(player);
                             return 1;
                         }))));
-
-        // Kloroful üretimi: su dolu kazana Karanfil -> Kloroful kazanı; kazandan cam şişeyle Kloroful al
-        UseBlockCallback.EVENT.register((player, level, hand, hit) -> {
-            if (player.isSpectator()) return InteractionResult.PASS;
-            BlockPos pos = hit.getBlockPos();
-            var state = level.getBlockState(pos);
-            ItemStack held = player.getItemInHand(hand);
-
-            if (state.is(Blocks.WATER_CAULDRON) && held.is(CARNATION.asItem())) {
-                if (!level.isClientSide()) {
-                    level.setBlockAndUpdate(pos, CHLOROFUL_CAULDRON.defaultBlockState()
-                            .setValue(ChloroCauldronBlock.LEVEL, state.getValue(LayeredCauldronBlock.LEVEL)));
-                    if (!player.getAbilities().instabuild) held.shrink(1);
-                    level.playSound(null, pos, SoundEvents.BOTTLE_FILL, SoundSource.BLOCKS, 1.0F, 1.0F);
-                }
-                return InteractionResult.SUCCESS;
-            }
-
-            if (state.is(CHLOROFUL_CAULDRON) && held.is(Items.GLASS_BOTTLE)) {
-                if (!level.isClientSide()) {
-                    int fill = state.getValue(ChloroCauldronBlock.LEVEL);
-                    ItemStack bottle = new ItemStack(CHLOROFUL);
-                    if (!player.getAbilities().instabuild) {
-                        held.shrink(1);
-                        if (held.isEmpty()) {
-                            player.setItemInHand(hand, bottle);
-                        } else if (!player.getInventory().add(bottle)) {
-                            player.drop(bottle, false);
-                        }
-                    } else if (!player.getInventory().add(bottle)) {
-                        player.drop(bottle, false);
-                    }
-                    level.setBlockAndUpdate(pos, fill <= 1 ? Blocks.CAULDRON.defaultBlockState()
-                            : state.setValue(ChloroCauldronBlock.LEVEL, fill - 1));
-                    level.playSound(null, pos, SoundEvents.BOTTLE_FILL, SoundSource.BLOCKS, 1.0F, 1.0F);
-                }
-                return InteractionResult.SUCCESS;
-            }
-            return InteractionResult.PASS;
-        });
 
         ServerTickEvents.END_SERVER_TICK.register(server -> {
             for (ServerPlayer player : server.getPlayerList().getPlayers()) {

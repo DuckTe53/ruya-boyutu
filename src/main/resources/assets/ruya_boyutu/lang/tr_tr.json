@@ -49,5 +49,8 @@
   "item.ruya_boyutu.nightmare_zombie_spawn_egg": "Nightmare Zombisi Çağırma Yumurtası",
   "subtitles.ruya_boyutu.unicorn_ambient": "Unicorn kişner",
   "subtitles.ruya_boyutu.unicorn_hurt": "Unicorn acıyla bağırır",
-  "subtitles.ruya_boyutu.unicorn_death": "Unicorn ölür"
+  "subtitles.ruya_boyutu.unicorn_death": "Unicorn ölür",
+  "block.ruya_boyutu.karanfil": "Karanfil",
+  "block.ruya_boyutu.chloroful_cauldron": "Kloroful Kazanı",
+  "item.ruya_boyutu.chloroful_bucket": "Kloroful Kovası"
 }

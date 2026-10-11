@@ -61,6 +61,20 @@ public class ChlorofulCauldronBlock extends AbstractCauldronBlock {
             return InteractionResult.SUCCESS;
         });
 
+        // Su dolu kazana Karanfil at -> Kloroful Kazanı (su seviyesi korunur, 1 karanfil harcanır)
+        CauldronInteraction.WATER.map().put(KaranfilMod.KARANFIL.asItem(), (state, level, pos, player, hand, stack) -> {
+            if (!level.isClientSide()) {
+                int fill = state.getValue(LEVEL);
+                if (!player.getAbilities().instabuild) {
+                    stack.shrink(1);
+                }
+                level.setBlockAndUpdate(pos, KaranfilMod.CHLOROFUL_CAULDRON.defaultBlockState().setValue(LEVEL, fill));
+                level.playSound(null, pos, SoundEvents.BOTTLE_FILL, SoundSource.BLOCKS, 1.0F, 1.0F);
+                level.gameEvent(null, GameEvent.FLUID_PLACE, pos);
+            }
+            return InteractionResult.SUCCESS;
+        });
+
         // Dolu kazandan cam şişe ile Kloroful al
         INTERACTIONS.map().put(Items.GLASS_BOTTLE, (state, level, pos, player, hand, stack) -> {
             if (!level.isClientSide()) {

@@ -14,8 +14,6 @@ public class RuyaBoyutuClient implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
-        // Karanfil şeffaf dokulu olduğu için CUTOUT katmanında çizilir
-        BlockRenderLayerMap.putBlock(RuyaBoyutuMod.CARNATION, ChunkSectionLayer.CUTOUT);
         EntityRendererRegistry.register(RuyaBoyutuMod.NIGHTMARE_ZOMBIE, NightmareZombieRenderer::new);
         EntityRendererRegistry.register(RuyaBoyutuMod.HEROBRINE_SILHOUETTE,
                 context -> new SilhouetteRenderer(context, HEROBRINE_TEXTURE));

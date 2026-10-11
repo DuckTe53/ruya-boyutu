@@ -49,5 +49,8 @@
   "item.ruya_boyutu.nightmare_zombie_spawn_egg": "Nightmare Zombie Spawn Egg",
   "subtitles.ruya_boyutu.unicorn_ambient": "Unicorn whinnies",
   "subtitles.ruya_boyutu.unicorn_hurt": "Unicorn cries",
-  "subtitles.ruya_boyutu.unicorn_death": "Unicorn dies"
+  "subtitles.ruya_boyutu.unicorn_death": "Unicorn dies",
+  "block.ruya_boyutu.karanfil": "Carnation",
+  "block.ruya_boyutu.chloroful_cauldron": "Chloroful Cauldron",
+  "item.ruya_boyutu.chloroful_bucket": "Chloroful Bucket"
 }
